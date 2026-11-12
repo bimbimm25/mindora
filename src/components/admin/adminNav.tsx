@@ -77,19 +77,22 @@ export default function AdminNav({
                             <button
                                 key={item.id}
                                 onClick={() => onSelectSection(item.id)}
-                                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-medium transition-all cursor-pointer ${isActive
-                                        ? 'bg-purple-700 text-white shadow-sm'
+                                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${isActive
+                                        ? 'bg-purple-50 text-purple-700 font-semibold shadow-2xs ring-1 ring-purple-200/70'
                                         : 'text-slate-600 hover:text-purple-700 hover:bg-purple-50/70'
                                     }`}
                             >
                                 <span className="flex items-center gap-3">
-                                    <item.icon className="w-4 h-4" />
+                                    <item.icon
+                                        className={`w-4 h-4 ${isActive ? 'text-purple-700' : 'text-slate-400'
+                                            }`}
+                                    />
                                     {item.label}
                                 </span>
                                 {item.badge !== undefined && (
                                     <span
                                         className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${isActive
-                                                ? 'bg-white/20 text-white'
+                                                ? 'bg-purple-700 text-white'
                                                 : 'bg-slate-100 text-slate-600'
                                             }`}
                                     >
@@ -129,19 +132,31 @@ export default function AdminNav({
                 </Link>
             </header>
 
-            {/* MOBILE BOTTOM NAVIGATION */}
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 py-2 flex justify-around items-center z-50">
+            {/* MOBILE BOTTOM NAVIGATION (FLOATING ACTIVE TAB + SMOOTH ANIMATION) */}
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-3 pt-1.5 pb-2.5 flex justify-around items-end gap-2 z-50 shadow-[0_-4px_20px_-6px_rgba(15,23,42,0.06)]">
                 {menuItems.map((item) => {
                     const isActive = activeSection === item.id
                     return (
                         <button
                             key={item.id}
                             onClick={() => onSelectSection(item.id)}
-                            className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition flex-1 cursor-pointer ${isActive ? 'text-purple-700 font-semibold' : 'text-slate-500'
+                            className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 px-2 rounded-2xl transition-all duration-300 ease-out active:scale-90 cursor-pointer ${isActive
+                                    ? '-translate-y-2.5 bg-purple-700 text-white shadow-lg shadow-purple-700/25 ring-4 ring-white'
+                                    : 'text-slate-500 hover:text-purple-700 hover:bg-purple-50/70'
                                 }`}
                         >
-                            <item.icon className="w-5 h-5" />
-                            <span className="text-[11px]">{item.mobileLabel}</span>
+                            <item.icon
+                                className={`w-5 h-5 transition-transform duration-300 ease-out ${isActive
+                                        ? 'scale-110 text-white'
+                                        : 'group-hover:-translate-y-0.5 group-hover:text-purple-700'
+                                    }`}
+                            />
+                            <span
+                                className={`text-[11px] mt-1 transition-all duration-300 ${isActive ? 'font-bold text-white' : 'font-medium'
+                                    }`}
+                            >
+                                {item.mobileLabel}
+                            </span>
                         </button>
                     )
                 })}
