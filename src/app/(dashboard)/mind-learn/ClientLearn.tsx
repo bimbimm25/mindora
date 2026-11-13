@@ -45,19 +45,21 @@ interface ClientLearnProps {
     contents?: any[]
     initialContents?: any[]
     articles?: any[]
+    completedIds?: string[]
 }
 
 export default function ClientLearn({
     contents,
     initialContents,
     articles,
+    completedIds = [],
 }: ClientLearnProps) {
     const articleList = contents ?? initialContents ?? articles ?? []
 
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('Semua')
     const [selectedArticle, setSelectedArticle] = useState<any | null>(null)
-    const [readIds, setReadIds] = useState<Set<string>>(new Set())
+    const [readIds, setReadIds] = useState<Set<string>>(new Set(completedIds))
     const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set())
 
     // Ambil daftar kategori unik dari data
@@ -196,8 +198,8 @@ export default function ClientLearn({
                                 type="button"
                                 onClick={() => setSelectedCategory(cat)}
                                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${isActive
-                                        ? 'bg-purple-700 text-white shadow-xs'
-                                        : 'bg-slate-100/80 text-slate-600 hover:bg-purple-50 hover:text-purple-700'
+                                    ? 'bg-purple-700 text-white shadow-xs'
+                                    : 'bg-slate-100/80 text-slate-600 hover:bg-purple-50 hover:text-purple-700'
                                     }`}
                             >
                                 {cat}
@@ -209,8 +211,8 @@ export default function ClientLearn({
                         type="button"
                         onClick={() => setSelectedCategory('Tersimpan')}
                         className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 inline-flex items-center gap-1 ${selectedCategory === 'Tersimpan'
-                                ? 'bg-amber-600 text-white shadow-xs'
-                                : 'bg-amber-50 text-amber-800 hover:bg-amber-100'
+                            ? 'bg-amber-600 text-white shadow-xs'
+                            : 'bg-amber-50 text-amber-800 hover:bg-amber-100'
                             }`}
                     >
                         <Bookmark className="w-3 h-3" /> Tersimpan ({bookmarkedIds.size})
@@ -269,8 +271,8 @@ export default function ClientLearn({
                                             type="button"
                                             onClick={(e) => toggleBookmark(article.id, e)}
                                             className={`p-2 rounded-xl transition cursor-pointer active:scale-90 ${isBookmarked
-                                                    ? 'bg-amber-100 text-amber-700'
-                                                    : 'bg-slate-50 text-slate-400 hover:text-amber-600 hover:bg-amber-50'
+                                                ? 'bg-amber-100 text-amber-700'
+                                                : 'bg-slate-50 text-slate-400 hover:text-amber-600 hover:bg-amber-50'
                                                 }`}
                                             title={
                                                 isBookmarked ? 'Hapus dari tersimpan' : 'Simpan bacaan'
@@ -356,8 +358,8 @@ export default function ClientLearn({
                                     type="button"
                                     onClick={() => toggleBookmark(selectedArticle.id)}
                                     className={`p-2 rounded-xl transition cursor-pointer ${bookmarkedIds.has(selectedArticle.id)
-                                            ? 'bg-amber-100 text-amber-700'
-                                            : 'bg-slate-100 text-slate-600 hover:bg-amber-50'
+                                        ? 'bg-amber-100 text-amber-700'
+                                        : 'bg-slate-100 text-slate-600 hover:bg-amber-50'
                                         }`}
                                     title="Simpan bacaan"
                                 >

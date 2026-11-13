@@ -49,18 +49,20 @@ const GUIDED_PROMPTS = [
 ]
 
 interface ClientJournalProps {
+    initialJournals?: any[]
     initialEntries?: any[]
     entries?: any[]
     journals?: any[]
 }
 
 export default function ClientJournal({
+    initialJournals,
     initialEntries,
     entries,
     journals,
 }: ClientJournalProps) {
-    // Menangani berbagai kemungkinan nama prop dari page.tsx agar anti-error
-    const journalList = initialEntries ?? entries ?? journals ?? []
+    const journalList =
+        initialJournals ?? initialEntries ?? entries ?? journals ?? []
 
     const [title, setTitle] = useState('')
     const [selectedPrompt, setSelectedPrompt] = useState<string>(
@@ -264,8 +266,8 @@ export default function ClientJournal({
                                             type="button"
                                             onClick={() => handleSelectPrompt(item.question)}
                                             className={`p-3.5 rounded-2xl border text-left transition-all duration-200 cursor-pointer active:scale-95 flex flex-col justify-between ${isSelected
-                                                    ? 'bg-purple-50/80 border-purple-400 ring-2 ring-purple-400/20 shadow-2xs'
-                                                    : 'bg-slate-50/60 border-slate-200/80 hover:bg-white hover:border-slate-300'
+                                                ? 'bg-purple-50/80 border-purple-400 ring-2 ring-purple-400/20 shadow-2xs'
+                                                : 'bg-slate-50/60 border-slate-200/80 hover:bg-white hover:border-slate-300'
                                                 }`}
                                         >
                                             <span

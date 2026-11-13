@@ -49,6 +49,7 @@ interface ClientQuestProps {
     initialMissions?: any[]
     userMissions?: any[]
     completedIds?: string[]
+    completedHistory?: any[]
 }
 
 export default function ClientQuest({
@@ -56,12 +57,13 @@ export default function ClientQuest({
     initialMissions,
     userMissions = [],
     completedIds = [],
+    completedHistory = [],
 }: ClientQuestProps) {
     const missionList = missions ?? initialMissions ?? []
 
-    // Menggabungkan daftar ID misi yang sudah selesai dari berbagai format prop
     const initialCompletedSet = new Set<string>([
         ...completedIds,
+        ...completedHistory.map((item) => item.mission_id || item.id),
         ...userMissions
             .filter((um) => um.is_completed || um.completed_at)
             .map((um) => um.mission_id || um.id),
@@ -187,8 +189,8 @@ export default function ClientQuest({
                             type="button"
                             onClick={() => setActiveFilter(tab.id as any)}
                             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${activeFilter === tab.id
-                                    ? 'bg-purple-700 text-white shadow-xs'
-                                    : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                                ? 'bg-purple-700 text-white shadow-xs'
+                                : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
                                 }`}
                         >
                             {tab.label}
@@ -228,8 +230,8 @@ export default function ClientQuest({
                             <div
                                 key={mission.id}
                                 className={`group rounded-3xl border p-4 sm:p-5 transition-all duration-300 flex items-start gap-3.5 ${isDone
-                                        ? 'bg-emerald-50/40 border-emerald-200/90'
-                                        : 'bg-white border-slate-200/90 hover:border-purple-300 hover:shadow-sm'
+                                    ? 'bg-emerald-50/40 border-emerald-200/90'
+                                    : 'bg-white border-slate-200/90 hover:border-purple-300 hover:shadow-sm'
                                     }`}
                             >
                                 {/* Tombol Centang Besar & Nyaman Disentuh Jari */}
@@ -238,8 +240,8 @@ export default function ClientQuest({
                                     onClick={() => handleToggle(mission)}
                                     disabled={isLoading}
                                     className={`mt-0.5 p-2 rounded-2xl transition-all cursor-pointer active:scale-90 shrink-0 ${isDone
-                                            ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20'
-                                            : 'bg-slate-100 text-slate-400 hover:bg-purple-100 hover:text-purple-700'
+                                        ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20'
+                                        : 'bg-slate-100 text-slate-400 hover:bg-purple-100 hover:text-purple-700'
                                         }`}
                                     title={
                                         isDone ? 'Tandai belum selesai' : 'Tandai sudah dilakukan'
@@ -277,8 +279,8 @@ export default function ClientQuest({
 
                                     <h3
                                         className={`text-sm sm:text-base font-bold transition-colors ${isDone
-                                                ? 'text-emerald-950 line-through decoration-emerald-500/50'
-                                                : 'text-slate-800 group-hover:text-purple-700'
+                                            ? 'text-emerald-950 line-through decoration-emerald-500/50'
+                                            : 'text-slate-800 group-hover:text-purple-700'
                                             }`}
                                     >
                                         {mission.title}
@@ -341,8 +343,8 @@ export default function ClientQuest({
                                     setSelectedMission(null)
                                 }}
                                 className={`w-full py-3.5 rounded-2xl font-bold text-sm transition flex items-center justify-center gap-2 cursor-pointer active:scale-95 ${completedSet.has(selectedMission.id)
-                                        ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                                        : 'bg-purple-700 text-white hover:bg-purple-800 shadow-md shadow-purple-700/20'
+                                    ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                    : 'bg-purple-700 text-white hover:bg-purple-800 shadow-md shadow-purple-700/20'
                                     }`}
                             >
                                 <CheckCircle2 className="w-4 h-4" />

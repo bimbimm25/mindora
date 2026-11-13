@@ -76,6 +76,8 @@ interface ClientInsightsProps {
     moods?: any[]
     journalEntries?: any[]
     journals?: any[]
+    journalCount?: number
+    questCount?: number
 }
 
 interface ChartPoint {
@@ -97,6 +99,7 @@ export default function ClientInsights({
     moods,
     journalEntries,
     journals,
+    journalCount,
 }: ClientInsightsProps) {
     const allMoods = moodEntries ?? entries ?? moods ?? []
     const allJournals = journalEntries ?? journals ?? []
@@ -458,8 +461,8 @@ export default function ClientInsights({
                                     setSelectedDayPoint(null)
                                 }}
                                 className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${range === tab.id
-                                        ? 'bg-white text-purple-800 shadow-xs'
-                                        : 'text-purple-100 hover:text-white'
+                                    ? 'bg-white text-purple-800 shadow-xs'
+                                    : 'text-purple-100 hover:text-white'
                                     }`}
                             >
                                 {tab.label}
@@ -539,7 +542,7 @@ export default function ClientInsights({
                         </div>
                     </div>
                     <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                        {filteredJournals.length}
+                        {typeof journalCount === 'number' ? journalCount : filteredJournals.length}
                     </p>
                     <p className="text-[11px] text-slate-500 mt-1">
                         Refleksi pribadi tersimpan
@@ -626,8 +629,8 @@ export default function ClientInsights({
                                                 type="button"
                                                 onClick={() => setSelectedDayPoint(point)}
                                                 className={`aspect-square rounded-2xl border p-1 sm:p-1.5 flex flex-col items-center justify-between transition-all cursor-pointer active:scale-90 relative ${point.hasData && meta
-                                                        ? `${meta.cellBg} shadow-2xs`
-                                                        : 'bg-slate-50/70 border-slate-200/70 text-slate-400 hover:bg-slate-100/80'
+                                                    ? `${meta.cellBg} shadow-2xs`
+                                                    : 'bg-slate-50/70 border-slate-200/70 text-slate-400 hover:bg-slate-100/80'
                                                     } ${point.isToday
                                                         ? 'ring-2 ring-purple-600 ring-offset-1'
                                                         : ''
@@ -722,8 +725,8 @@ export default function ClientInsights({
 
                                             <div
                                                 className={`w-full max-w-11 h-36 rounded-2xl flex items-end p-1 overflow-hidden transition-colors ${point.isToday
-                                                        ? 'bg-purple-100/80 ring-1 ring-purple-300'
-                                                        : 'bg-slate-100/90'
+                                                    ? 'bg-purple-100/80 ring-1 ring-purple-300'
+                                                    : 'bg-slate-100/90'
                                                     }`}
                                             >
                                                 {point.hasData && meta ? (
