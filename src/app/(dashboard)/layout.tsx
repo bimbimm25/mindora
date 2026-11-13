@@ -1,13 +1,18 @@
-import { ReactNode } from 'react'
 import Sidebar from '@/components/layout/Sidebar'
 import MobileNav from '@/components/layout/MobileNav'
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
     return (
-        <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row">
+        <div className="min-h-dvh bg-slate-50/70 flex flex-col md:flex-row">
             <Sidebar />
+
             <MobileNav />
-            <main className="flex-1 w-full max-w-full overflow-x-hidden p-4 md:p-8 pb-24 md:pb-8">
+
+            <main className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-24 md:pb-8">
                 {children}
             </main>
         </div>

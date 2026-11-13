@@ -10,95 +10,72 @@ import {
     GraduationCap,
     LineChart,
     Settings,
+    MessageCircleHeart,
     Leaf,
-    LogOut,
-    ShieldCheck,
 } from 'lucide-react'
-import { logout } from '@/app/(auth)/actions'
 
-const MENU_ITEMS = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Mind Tracker', href: '/mind-tracker', icon: SmilePlus },
-    { name: 'Smart Journal', href: '/smart-journal', icon: BookHeart },
-    { name: 'Mood Quest', href: '/mood-quest', icon: Target },
-    { name: 'Mind Learn', href: '/mind-learn', icon: GraduationCap },
-    { name: 'Mind Insights', href: '/mind-insights', icon: LineChart },
-    { name: 'Pengaturan', href: '/settings', icon: Settings },
+const NAV_ITEMS = [
+    { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { label: 'Mind Tracker', href: '/mind-tracker', icon: SmilePlus },
+    { label: 'Teman Curhat', href: '/mind-chat', icon: MessageCircleHeart, isAi: true },
+    { label: 'Smart Journal', href: '/smart-journal', icon: BookHeart },
+    { label: 'Mood Quest', href: '/mood-quest', icon: Target },
+    { label: 'Mind Learn', href: '/mind-learn', icon: GraduationCap },
+    { label: 'Mind Insights', href: '/mind-insights', icon: LineChart },
+    { label: 'Pengaturan', href: '/settings', icon: Settings },
 ]
 
-export default function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
+export default function Sidebar() {
     const pathname = usePathname()
 
-    async function handleLogout() {
-        await logout()
-    }
-
     return (
-        <aside className="hidden md:flex flex-col w-64 h-screen bg-white border-r border-slate-200/80 sticky top-0 shrink-0">
-            {/* Brand Logo */}
-            <div className="p-6 border-b border-slate-100">
-                <Link href="/dashboard" className="flex items-center gap-2.5 text-purple-700">
-                    <div className="p-1.5 bg-purple-100 rounded-lg">
-                        <Leaf className="w-6 h-6" />
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-slate-800">MINDORA</span>
-                </Link>
+        <aside className="hidden md:flex md:flex-col md:w-64 md:shrink-0 bg-white border-r border-slate-200/80 min-h-dvh">
+            {/* Brand Header */}
+            <div className="px-6 py-5 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center">
+                    <Leaf className="w-5 h-5" />
+                </div>
+                <span className="text-lg font-extrabold tracking-tight text-slate-900">
+                    MINDORA
+                </span>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="flex-1 px-4 py-5 space-y-1.5 overflow-y-auto">
-                {MENU_ITEMS.map((item) => {
-                    const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
+            {/* Menu Navigasi */}
+            <nav className="flex-1 px-3 py-2 space-y-1">
+                {NAV_ITEMS.map((item) => {
+                    const isActive = pathname === item.href
+                    const Icon = item.icon
 
                     return (
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`group flex items-center justify-between px-3.5 py-3 rounded-xl text-sm transition-all duration-200 ${isActive
-                                    ? 'bg-purple-50 text-purple-700 font-semibold shadow-2xs ring-1 ring-purple-200/70'
-                                    : 'text-slate-600 font-medium hover:bg-purple-50/70 hover:text-purple-700'
+                            className={`flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-medium transition-all ${isActive
+                                    ? 'bg-purple-50 text-purple-700 font-bold'
+                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                                 }`}
                         >
-                            <div className="flex items-center gap-3">
-                                <item.icon
-                                    className={`w-4 h-4 transition-colors ${isActive ? 'text-purple-700' : 'text-slate-400 group-hover:text-purple-700'
+                            <span className="flex items-center gap-3.5">
+                                <Icon
+                                    className={`w-5 h-5 ${isActive ? 'text-purple-700' : 'text-slate-400'
                                         }`}
                                 />
-                                <span>{item.name}</span>
-                            </div>
+                                {item.label}
+                            </span>
 
-                            {isActive && (
+                            {item.isAi && (
+                                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-purple-700 text-white">
+                                    AI
+                                </span>
+                            )}
+
+                            {isActive && !item.isAi && (
                                 <span className="w-1.5 h-1.5 rounded-full bg-purple-700" />
                             )}
                         </Link>
                     )
                 })}
-
-                {isAdmin && (
-                    <div className="pt-4 mt-4 border-t border-slate-100">
-                        <Link
-                            href="/admin"
-                            className="group flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium text-emerald-700 bg-emerald-50/60 hover:bg-emerald-100/80 transition-all"
-                        >
-                            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                            <span>Admin Panel</span>
-                        </Link>
-                    </div>
-                )}
             </nav>
-
-            {/* Logout Button */}
-            <div className="p-4 border-t border-slate-100">
-                <form action={handleLogout}>
-                    <button
-                        type="submit"
-                        className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-                    >
-                        <LogOut className="w-4 h-4" />
-                        <span>Keluar</span>
-                    </button>
-                </form>
-            </div>
         </aside>
     )
 }
